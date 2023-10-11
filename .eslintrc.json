@@ -10,7 +10,8 @@
         "node": true
     },
     "rules": {
-        "no-async-promise-executor": 0
+        "no-async-promise-executor": 0,
+        "no-unused-vars": "warn"
         // "no-console": "error"
     }
 }
