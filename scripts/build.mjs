@@ -1,10 +1,10 @@
 import showdown from 'showdown';
 import fs from 'node:fs';
-import minify_module from 'html-minifier';
+import htmlMinifyModule from 'html-minifier';
 import CleanCSS from 'clean-css';
 import ejs from 'ejs';
 
-const minify = minify_module.minify;
+const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();
 
 // Creates a production environment
@@ -79,11 +79,11 @@ export function parseMarkdown(
             return;
         }
         converter.setOption('tables', true);
-        var markdownContent = converter.makeHtml(data);
+        var htmlContent = converter.makeHtml(data);
 
         ejs.renderFile(
             `./static/${mode}.ejs`,
-            { navbar: navbar, markdownContent: markdownContent },
+            { navbar: navbar, markdownContent: htmlContent },
             (err, str) => {
                 str = minify(str, {
                     removeAttributeQuotes: true,
