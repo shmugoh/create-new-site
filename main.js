@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 
-import { createProdEnv, readDir, parseMarkdown } from './scripts/build.mjs';
+import { READ_DIRECTORY } from './utils/osBindings.mjs';
+import { createProdEnv, parseMarkdown } from './scripts/build.mjs';
 import { copyTemplate } from './scripts/template.mjs';
 import { processNavBar } from './scripts/navbar.mjs';
 
 // This self-invoking async function is the entry point of the program.
-// It orchestrates the following steps:
+// It goes through the following steps:
 // 1. Create the production environment (copy static files and minify CSS).
 // 2. Retrieve a list of Markdown files in the './markdown' directory.
 // 3. Generate a navigation bar based on the first line of each Markdown file.
 // 4. Iterate through each Markdown file, parse it into HTML, and save it in the 'prod' directory.
 (async () => {
     // Step 0: Extract Template Environment from Module
-    let dirFiles = await readDir('.');
+    let dirFiles = await READ_DIRECTORY('.');
 
     // Checks if Template Folders are not in the same directory
     if (
@@ -20,6 +21,7 @@ import { processNavBar } from './scripts/navbar.mjs';
         !dirFiles.includes('markdown') &&
         !dirFiles.includes('static')
     ) {
+        // Gets Template Folder from Module Folder
         await copyTemplate(process.cwd());
     } else {
         console.log(
@@ -31,7 +33,7 @@ import { processNavBar } from './scripts/navbar.mjs';
     await createProdEnv();
 
     // Step 2: Get a list of Markdown files in the './markdown' directory
-    let files = await readDir('./markdown');
+    let files = await READ_DIRECTORY('./markdown');
 
     // Step 3: Generate the navigation bar
     let navbar = await processNavBar();

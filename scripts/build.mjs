@@ -1,71 +1,77 @@
 import showdown from 'showdown';
-import fs from 'node:fs';
 import htmlMinifyModule from 'html-minifier';
 import CleanCSS from 'clean-css';
 import ejs from 'ejs';
 
+import {
+    COPY_FILE,
+    CREATE_DIRECTORY,
+    READ_DIRECTORY,
+    READ_FILE,
+    WRITE_FILE,
+} from '../utils/osBindings.mjs';
+
 const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();
 
-// Creates a production environment
-// by copying static files and minifying CSS
+/*
+ * Creates a production environment by copying static files and minifying CSS.
+ */
 export async function createProdEnv() {
-    fs.mkdir('./prod', (err) => {
-        if (err) {
-            return console.error(err);
-        }
-    });
-    let staticFiles = await readDir('./static');
-    let cssFiles = await readDir('./css');
+    // Create necessary directories in the 'prod' environment
+    CREATE_DIRECTORY('./prod/');
+    CREATE_DIRECTORY('./static/');
+    CREATE_DIRECTORY('./css/');
 
+    // Read the list of static and CSS files
+    let staticFiles = await READ_DIRECTORY('./static');
+    let cssFiles = await READ_DIRECTORY('./css');
+
+    // Copy static files to the 'prod' directory
     staticFiles.forEach((file) => {
         if (file != String(file).match('.*.ejs$')) {
-            fs.copyFile(`./static/${file}`, `./prod/${file}`, (err) => {
-                if (err) {
-                    return console.error();
-                }
-            });
+            COPY_FILE(`./static/${file}`, `./prod/${file}`);
         }
     });
+
+    // Minify CSS files and save them in the 'prod' directory
     cssFiles.forEach((file) => {
         if (file == String(file).match('.*.css$')) {
-            fs.readFile(`./css/${file}`, (err, data) => {
-                if (err) {
-                    console.error(err);
-                }
-                var output = new CleanCSS({
-                    compatibility: 'ie8',
-                    level: 2,
-                    inline: false,
-                    rebase: false,
-                    keepBreaks: false,
-                    aggressiveMerging: true,
-                    processImport: false,
-                    specialComments: 'none',
-                }).minify(data);
+            let data = READ_FILE(`./css/${file}`);
+            let output = new CleanCSS({
+                compatibility: 'ie8',
+                level: 2,
+                inline: false,
+                rebase: false,
+                keepBreaks: false,
+                aggressiveMerging: true,
+                processImport: false,
+                specialComments: 'none',
+            }).minify(data);
 
-                fs.writeFile(`./prod/${file}`, output['styles'], (err) => {
-                    if (err) {
-                        console.error(err);
-                    }
-                });
-            });
+            WRITE_FILE(`./prod/${file}`, output['styles']);
         }
     });
-
-    return 1;
 }
 
-// Parses Markdown to HTML and saves
-// the result in the 'prod' directory
-export function parseMarkdown(
+/**
+ * Parses Markdown to HTML and saves the result in the 'prod' directory.
+ *
+ * @param {string} src - Source file path for Markdown content.
+ * @param {string} mode - Mode for processing (e.g., 'template').
+ * @param {string} navbar - Raw HTML Navigation Bar String.
+ */
+export async function parseMarkdown(
     src = './markdown/index.md',
     mode = 'template',
     navbar
 ) {
+    // Extract file name and format from the source file path
     let fileRegEx = src.match(/\/.*\/([^\\]*)\.(\w+)$/);
     let fileName = fileRegEx[1];
     let fileFormat = fileRegEx[2];
+
+    // Check if the source file is a Markdown file
     if (fileFormat != 'md') {
         console.error(
             `${fileName}.${fileFormat} in /markdown/ is not a .md file. Proceeding to skip.`
@@ -73,47 +79,28 @@ export function parseMarkdown(
         return;
     }
 
-    fs.readFile(src, 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        converter.setOption('tables', true);
-        var htmlContent = converter.makeHtml(data);
+    // Read Markdown content from the source file
+    let markdownContent = await READ_FILE(src);
+    console.log(1);
+    console.log(markdownContent);
 
-        ejs.renderFile(
-            `./static/${mode}.ejs`,
-            { navbar: navbar, markdownContent: htmlContent },
-            (err, str) => {
-                str = minify(str, {
-                    removeAttributeQuotes: true,
-                    caseSensitive: true,
-                    collapseWhitespace: true,
-                    removeComments: true,
-                    quoteCharacter: `'`,
-                });
-                fs.writeFile(`./prod/${fileName}.html`, str, (err) => {
-                    if (err) {
-                        console.error(err);
-                    }
-                });
-            }
-        );
-    });
-}
+    // Convert Markdown content to HTML
+    converter.setOption('tables', true);
+    var htmlContent = converter.makeHtml(markdownContent);
 
-// Reads a directory and returns available files
-export async function readDir(src = './markdown') {
-    let files = [];
-
-    return new Promise((resolve) => {
-        setTimeout(function () {
-            fs.readdir(src, (err, data) => {
-                data.forEach((file) => {
-                    files.push(file);
-                });
-                resolve(files);
+    // Render an HTML template using EJS, minify it, and save in the 'prod' directory
+    ejs.renderFile(
+        `./static/${mode}.ejs`,
+        { navbar: navbar, markdownContent: htmlContent },
+        (err, str) => {
+            str = minify(str, {
+                removeAttributeQuotes: true,
+                caseSensitive: true,
+                collapseWhitespace: true,
+                removeComments: true,
+                quoteCharacter: `'`,
             });
-        }, 250);
-    });
+            WRITE_FILE(`./prod/${fileName}.html`, str);
+        }
+    );
 }
