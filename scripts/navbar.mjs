@@ -1,5 +1,5 @@
-const fs = require('fs');
-const readline = require('readline');
+import fs from 'node:fs';
+import readline from 'readline';
 import { readDir } from './build.mjs';
 
 // Iterates through each file in '/markdown/' and

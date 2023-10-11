@@ -1,9 +1,10 @@
-const showdown = require('showdown');
-const ejs = require('ejs');
-const fs = require('fs');
-const minify = require('html-minifier').minify;
-const CleanCSS = require('clean-css');
+import showdown from 'showdown';
+import fs from 'node:fs';
+import minify_module from 'html-minifier';
+import CleanCSS from 'clean-css';
+import ejs from 'ejs';
 
+const minify = minify_module.minify;
 let converter = new showdown.Converter();
 
 // Creates a production environment
