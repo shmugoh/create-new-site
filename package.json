@@ -1,9 +1,10 @@
 {
     "name": "create-new-site",
-    "description": "Static Markdown Site Generator using EJS and new.css with a heavy focus on performance",
+    "description": "Static Markdown Site Generator using EJS and new.css with a heavy focus on client performance",
     "author": "shmugo <juan@shmugo.co> (https://shmugo.co/)",
     "type": "module",
     "license": "MIT",
+    "version": "0.2.0",
     "keywords": [
         "static",
         "generator",
@@ -12,6 +13,7 @@
         "site",
         "ejs"
     ],
+    "bin": "main.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/juanpisss/create-new-site.git"

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { createProdEnv, readDir, parseMarkdown } from './scripts/build.mjs';
 import { copyTemplate } from './scripts/template.mjs';
 import { processNavBar } from './scripts/navbar.mjs';
