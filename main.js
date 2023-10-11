@@ -9,8 +9,21 @@ import { processNavBar } from './scripts/navbar.mjs';
 // 3. Generate a navigation bar based on the first line of each Markdown file.
 // 4. Iterate through each Markdown file, parse it into HTML, and save it in the 'prod' directory.
 (async () => {
-    // Step 0: Extract Template Environment
-    await copyTemplate(process.cwd());
+    // Step 0: Extract Template Environment from Module
+    let dirFiles = await readDir('.');
+
+    // Checks if Template Folders are not in the same directory
+    if (
+        !dirFiles.includes('css') &&
+        !dirFiles.includes('markdown') &&
+        !dirFiles.includes('static')
+    ) {
+        await copyTemplate(process.cwd());
+    } else {
+        console.log(
+            'Template already exists. Proceeding to compile in /prod/...'
+        );
+    }
 
     // Step 1: Create the production environment
     await createProdEnv();
