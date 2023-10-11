@@ -1,6 +1,8 @@
 # Home
 
-Welcome to your very first website generated using create-new-site! We're thrilled to have you on board. To start customizing your site, here's a quick guide:
+Welcome to your very first website, generated using create-new-site!
+We're thrilled to have you on board. To start customizing your site,
+here's a quick guide:
 
 #### Editing the Main Page
 
@@ -15,4 +17,7 @@ Want to expand your site? It's a breeze.
 
 ---
 
-Enjoy the journey of web development with create-new-site, and feel free to explore more features and customization options as you go. Happy coding! 🚀
+Enjoy the journey of web development with create-new-site, and feel
+free to explore more features and customization options as you go.
+
+Happy coding! 🚀
