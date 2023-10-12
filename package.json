@@ -19,7 +19,7 @@
         "url": "git+https://github.com/juanpisss/create-new-site.git"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "node main.js"
     },
     "dependencies": {
         "@exampledev/new.css": "^1.1.3",
