@@ -10,6 +10,7 @@ import {
     READ_FILE,
     WRITE_FILE,
 } from '../utils/osBindings.mjs';
+import { fixBracketPreview } from '../utils/markdownPreviewFix.mjs';
 
 const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();
@@ -19,25 +20,28 @@ let converter = new showdown.Converter();
  */
 export async function createProdEnv() {
     // Create necessary directories in the 'prod' environment
-    CREATE_DIRECTORY('./prod/');
-    CREATE_DIRECTORY('./static/');
-    CREATE_DIRECTORY('./css/');
-
+    CREATE_DIRECTORY('prod');
     // Read the list of static and CSS files
     let staticFiles = await READ_DIRECTORY('./static');
     let cssFiles = await READ_DIRECTORY('./css');
 
-    // Copy static files to the 'prod' directory
+    // Copy all static files to the 'prod' directory
+    CREATE_DIRECTORY('prod/static');
     staticFiles.forEach((file) => {
+        // Checks if static file isn't .ejs
         if (file != String(file).match('.*.ejs$')) {
-            COPY_FILE(`./static/${file}`, `./prod/${file}`);
+            COPY_FILE(`./static/${file}`, `./prod/static/${file}`);
         }
     });
 
     // Minify CSS files and save them in the 'prod' directory
+    CREATE_DIRECTORY('prod/css');
     cssFiles.forEach((file) => {
         if (file == String(file).match('.*.css$')) {
+            // Reads CSS
             let data = READ_FILE(`./css/${file}`);
+
+            // Minifies CSS
             let output = new CleanCSS({
                 compatibility: 'ie8',
                 level: 2,
@@ -49,7 +53,8 @@ export async function createProdEnv() {
                 specialComments: 'none',
             }).minify(data);
 
-            WRITE_FILE(`./prod/${file}`, output['styles']);
+            // Saves CSS to Directory
+            WRITE_FILE(`./prod/css${file}`, output['styles']);
         }
     });
 }
@@ -81,8 +86,7 @@ export async function parseMarkdown(
 
     // Read Markdown content from the source file
     let markdownContent = await READ_FILE(src);
-    console.log(1);
-    console.log(markdownContent);
+    markdownContent = fixBracketPreview(markdownContent);
 
     // Convert Markdown content to HTML
     converter.setOption('tables', true);
@@ -92,15 +96,22 @@ export async function parseMarkdown(
     ejs.renderFile(
         `./static/${mode}.ejs`,
         { navbar: navbar, markdownContent: htmlContent },
-        (err, str) => {
-            str = minify(str, {
+        (err, html) => {
+            if (err) {
+                console.error(err);
+            }
+
+            // Minfies HTML
+            html = minify(html, {
                 removeAttributeQuotes: true,
                 caseSensitive: true,
                 collapseWhitespace: true,
                 removeComments: true,
                 quoteCharacter: `'`,
             });
-            WRITE_FILE(`./prod/${fileName}.html`, str);
+
+            // Writes HTML
+            WRITE_FILE(`./prod/${fileName}.html`, html);
         }
     );
 }
