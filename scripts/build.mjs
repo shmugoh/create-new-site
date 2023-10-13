@@ -11,6 +11,7 @@ import {
     WRITE_FILE,
 } from '../utils/osBindings.mjs';
 import { fixBracketPreview } from '../utils/markdownPreviewFix.mjs';
+import { bind_config } from '../utils/parseConfig.mjs';
 
 const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();
@@ -67,13 +68,15 @@ export async function createProdEnv(src, dst) {
  * @param {string} dst - Destination for Compiled HTML.
  * @param {string} mode - Mode for processing (e.g., 'template').
  * @param {string} navbar - Raw HTML Navigation Bar String.
+ * @param {string} config - Configuration Object to Process within HTML
  */
 export async function parseMarkdown(
     folderSrc = './src',
     markdownSrc = './markdown/index.md',
     dst = './prod',
     mode = 'template',
-    navbar
+    navbar,
+    config
 ) {
     // Extract file name and format from the source file path
     let fileRegEx = markdownSrc.match(/.+\\([^\\]*)\.(\w+)$/);
@@ -100,20 +103,31 @@ export async function parseMarkdown(
     // and save in destination directory
     ejs.renderFile(
         `${folderSrc}\\static\\${mode}.ejs`,
-        { navbar: navbar, markdownContent: htmlContent },
+        {
+            // Configuration Bindings
+            title: bind_config('title', config['title']),
+            favicon: bind_config('favicon', config['favicon']),
+            css: bind_config('css', config['css']),
+            cache: bind_config('cache', config['cache']),
+            head: bind_config('head', config['head']),
+            embed: bind_config('embed', config['embed']),
+
+            navbar: navbar,
+            markdownContent: htmlContent,
+        },
         (err, html) => {
             if (err) {
                 console.error(err);
             }
 
             // Minfies HTML
-            html = minify(html, {
-                removeAttributeQuotes: true,
-                caseSensitive: true,
-                collapseWhitespace: true,
-                removeComments: true,
-                quoteCharacter: `'`,
-            });
+            // html = minify(html, {
+            //     removeAttributeQuotes: true,
+            //     caseSensitive: true,
+            //     collapseWhitespace: true,
+            //     removeComments: true,
+            //     quoteCharacter: `'`,
+            // });
 
             // Writes HTML
             WRITE_FILE(`${dst}\\${fileName}.html`, html);

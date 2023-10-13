@@ -9,7 +9,7 @@ export async function parse_yaml(filepath) {
 export function bind_config(key, value) {
     switch (key) {
         case 'title':
-            return `<title>${value}</title>`;
+            return `${value}`;
         case 'favicon':
             return `<meta rel="icon" type="image/x-icon" href="${value}"/>`;
         case 'css': {
@@ -77,7 +77,7 @@ export function bind_config(key, value) {
     }
 }
 
-(async () => {
-    let config = await parse_yaml('../template/config.yaml');
-    console.log(bind_config('embed', config['embed']));
-})();
+// (async () => {
+//     let config = await parse_yaml('../template/config.yaml');
+//     console.log(bind_config('embed', config['embed']));
+// })();

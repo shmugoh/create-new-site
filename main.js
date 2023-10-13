@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { READ_DIRECTORY } from './utils/osBindings.mjs';
+import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings.mjs';
+import { parse_yaml } from './utils/parseConfig.mjs';
+
 import { createProdEnv, parseMarkdown } from './scripts/build.mjs';
 import { copyTemplate } from './scripts/template.mjs';
 import { processNavBar } from './scripts/navbar.mjs';
@@ -50,45 +52,59 @@ function processFlags() {
     // Step 1: Process Parsed Flags (for Folders)
     let flags = processFlags();
 
-    // Step 2: Extract Template Environment from Module
-    let dirFiles = await READ_DIRECTORY('.');
-
-    // Checks if Template Folders are not in the same directory
-    if (
-        !dirFiles.includes('css') &&
-        !dirFiles.includes('markdown') &&
-        !dirFiles.includes('static')
-    ) {
-        // Gets Template Folder from Module Directory
-        // and copies to -dst parameter
-
-        // Get the current filename and directory of this module
+    // Step 2: Process Source Folder
+    // Checks if Source Folder exists
+    let dirFiles = await READ_DIRECTORY(`${flags['src']}`);
+    if (dirFiles.code == 'ENOENT') {
+        // Source Directory does not exist
+        console.log(
+            'Source Directory does not exist. Creating one right now...'
+        );
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
+        await CREATE_DIRECTORY(flags['src']);
         await copyTemplate(`${__dirname}\\template`, `${flags['src']}`);
     } else {
-        console.log(
-            `Template already exists. Proceeding to compile in ${flags['dst']}...`
-        );
+        if (
+            dirFiles.includes('css') &&
+            dirFiles.includes('markdown') &&
+            dirFiles.includes('static') &&
+            dirFiles.includes('config.yaml')
+        ) {
+            console.log(
+                `Template already exists. Proceeding to compile in ${flags['dst']}...`
+            );
+        } else {
+            // in case if -src folder is empty or has an unmatching file
+            console.error(
+                'Source folder does not match with template. Please remove and try again'
+            );
+        }
     }
 
     // Step 3: Create the production environment
     await createProdEnv(flags['src'], flags['dst']);
+    // TODO: Delete Existing Production Environment
+    // might cause problems down the line (eg: if prod's root is current folder)
 
-    // Step 4: Get a list of Markdown files in the './markdown' directory
+    // Step 4: Get a list of Markdown files in the 'markdown' directory
     let files = await READ_DIRECTORY(`${flags['src']}\\markdown`);
 
     // Step 5: Generate the navigation bar
     let navbar = await processNavBar(`${flags['src']}\\markdown`);
 
-    // Step 6: Iterate through each Markdown file, parse it, and save as HTML
+    // Step 6: Parse config.yaml to JavaScript Object
+    let config = await parse_yaml(`${flags['src']}\\config.yaml`);
+
+    // Step 7: Iterate through each Markdown file, parse it, and save as HTML
     files.forEach(async (file) => {
         await parseMarkdown(
             `${flags['src']}`,
             `${flags['src']}\\markdown\\${file}`,
             `${flags['dst']}`,
             'template',
-            navbar
+            navbar,
+            config
         );
     });
 })();
