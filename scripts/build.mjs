@@ -18,28 +18,28 @@ let converter = new showdown.Converter();
 /*
  * Creates a production environment by copying static files and minifying CSS.
  */
-export async function createProdEnv() {
-    // Create necessary directories in the 'prod' environment
-    CREATE_DIRECTORY('prod');
+export async function createProdEnv(src, dst) {
+    // Create necessary directories for destination
+    CREATE_DIRECTORY(dst);
     // Read the list of static and CSS files
-    let staticFiles = await READ_DIRECTORY('./static');
-    let cssFiles = await READ_DIRECTORY('./css');
+    let staticFiles = await READ_DIRECTORY(`${src}\\static`);
+    let cssFiles = await READ_DIRECTORY(`${src}\\css`);
 
-    // Copy all static files to the 'prod' directory
-    CREATE_DIRECTORY('prod/static');
+    // Copy all static files to destinationd directory
+    CREATE_DIRECTORY(`${dst}\\static`);
     staticFiles.forEach((file) => {
         // Checks if static file isn't .ejs
         if (file != String(file).match('.*.ejs$')) {
-            COPY_FILE(`./static/${file}`, `./prod/static/${file}`);
+            COPY_FILE(`${src}\\static\\${file}`, `${dst}\\static\\${file}`);
         }
     });
 
-    // Minify CSS files and save them in the 'prod' directory
-    CREATE_DIRECTORY('prod/css');
+    // Minify CSS files and save them in destination directory
+    CREATE_DIRECTORY(`${dst}\\css`);
     cssFiles.forEach((file) => {
         if (file == String(file).match('.*.css$')) {
             // Reads CSS
-            let data = READ_FILE(`./css/${file}`);
+            let data = READ_FILE(`${src}\\css\\${file}`);
 
             // Minifies CSS
             let output = new CleanCSS({
@@ -53,26 +53,30 @@ export async function createProdEnv() {
                 specialComments: 'none',
             }).minify(data);
 
-            // Saves CSS to Directory
-            WRITE_FILE(`./prod/css${file}`, output['styles']);
+            // Saves CSS to Destination Directory
+            WRITE_FILE(`${dst}\\css\\${file}`, output['styles']);
         }
     });
 }
 
 /**
- * Parses Markdown to HTML and saves the result in the 'prod' directory.
+ * Parses Markdown to HTML and saves the result in destination directory.
  *
- * @param {string} src - Source file path for Markdown content.
+ * @param {string} folderSrc - Source file path for Development content. Required to obtain .EJS Template.
+ * @param {string} markdownSrc - Source file path for Markdown content.
+ * @param {string} dst - Destination for Compiled HTML.
  * @param {string} mode - Mode for processing (e.g., 'template').
  * @param {string} navbar - Raw HTML Navigation Bar String.
  */
 export async function parseMarkdown(
-    src = './markdown/index.md',
+    folderSrc = './src',
+    markdownSrc = './markdown/index.md',
+    dst = './prod',
     mode = 'template',
     navbar
 ) {
     // Extract file name and format from the source file path
-    let fileRegEx = src.match(/\/.*\/([^\\]*)\.(\w+)$/);
+    let fileRegEx = markdownSrc.match(/.+\\([^\\]*)\.(\w+)$/);
     let fileName = fileRegEx[1];
     let fileFormat = fileRegEx[2];
 
@@ -85,16 +89,17 @@ export async function parseMarkdown(
     }
 
     // Read Markdown content from the source file
-    let markdownContent = await READ_FILE(src);
+    let markdownContent = await READ_FILE(markdownSrc);
     markdownContent = fixBracketPreview(markdownContent);
 
     // Convert Markdown content to HTML
     converter.setOption('tables', true);
     var htmlContent = converter.makeHtml(markdownContent);
 
-    // Render an HTML template using EJS, minify it, and save in the 'prod' directory
+    // Render an HTML template using EJS, minify it,
+    // and save in destination directory
     ejs.renderFile(
-        `./static/${mode}.ejs`,
+        `${folderSrc}\\static\\${mode}.ejs`,
         { navbar: navbar, markdownContent: htmlContent },
         (err, html) => {
             if (err) {
@@ -111,7 +116,7 @@ export async function parseMarkdown(
             });
 
             // Writes HTML
-            WRITE_FILE(`./prod/${fileName}.html`, html);
+            WRITE_FILE(`${dst}\\${fileName}.html`, html);
         }
     );
 }

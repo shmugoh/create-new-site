@@ -28,7 +28,7 @@ export async function processNavBar(src = './markdown') {
                 }
 
                 // Read the first line of the Markdown file to extract the title.
-                const readable = fs.createReadStream(`${src}/${file}`);
+                const readable = fs.createReadStream(`${src}\\${file}`);
                 const reader = readline.createInterface({ input: readable });
                 let line;
                 for await (const fileLine of reader) {
