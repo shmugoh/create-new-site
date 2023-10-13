@@ -23,6 +23,10 @@ export async function READ_DIRECTORY(path) {
     return new Promise((resolve) => {
         setTimeout(function () {
             fs.readdir(path, (err, data) => {
+                if (err) {
+                    resolve(err);
+                    return;
+                }
                 data.forEach((file) => {
                     files.push(file);
                 });
@@ -41,6 +45,10 @@ export async function READ_FILE(path) {
     return new Promise((resolve) => {
         setTimeout(function () {
             fs.readFile(path, 'utf8', (err, data) => {
+                if (err) {
+                    console.error(err);
+                    throw err;
+                }
                 resolve(data);
             });
         }, 250);
@@ -56,6 +64,7 @@ export function WRITE_FILE(pathSrc, content) {
     fs.writeFile(pathSrc, content, (err) => {
         if (err) {
             console.error(err);
+            throw err;
         }
     });
 }
@@ -69,6 +78,7 @@ export function COPY_FILE(pathSrc, pathDst) {
     fs.copyFile(pathSrc, pathDst, (err) => {
         if (err) {
             console.error(err);
+            throw err;
         }
     });
 }
