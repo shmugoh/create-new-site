@@ -1,11 +1,24 @@
 import YAML from 'yaml';
 import { READ_FILE } from './osBindings.mjs';
 
+/**
+ * Reads a Raw YAML File asynchronously and parses its content as an object.
+ *
+ * @param {string} filepath - The path to the YAML file.
+ * @returns {object} - Parsed YAML data as an object.
+ */
 export async function parse_yaml(filepath) {
     let yaml_data = await READ_FILE(filepath);
     return YAML.parse(yaml_data);
 }
 
+/**
+ * Binds HTML/Meta Tag based on the provided key and value.
+ *
+ * @param {string} key - The configuration key.
+ * @param {*} value - The value associated with the key.
+ * @returns {string} - HTML or meta tags generated based on the key and value.
+ */
 export function bind_config(key, value) {
     switch (key) {
         case 'title':
