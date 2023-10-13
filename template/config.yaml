@@ -1,0 +1,14 @@
+title: My First New-Site
+favicon: static/favicon.ico # https://github.com/Remix-Design/remixicon/blob/master/License
+cache:
+    - enable: true # if disabled, max-age and additional parameters will not be included
+    - max-age: 3600
+    - additional: public # for reference, check out https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
+css:
+    - 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css' # https://github.com/xz/new.css/blob/master/LICENSE
+    - 'https://fonts.xz.style/serve/inter.css'
+
+head:
+    - meta:
+          - charset="UTF-8"
+          - name="viewport" content="width=device-width, initial-scale=1.0"
