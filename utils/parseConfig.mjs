@@ -45,10 +45,39 @@ export function bind_config(key, value) {
             }
             return buff;
         }
+
+        case 'embed': {
+            let buff = '';
+            for (const attribute in value) {
+                switch (attribute) {
+                    case 'title':
+                        buff += `<meta content="${value[attribute]}" property="og:title" />`;
+                        continue;
+                    case 'description':
+                        buff += `<meta content="${value[attribute]}" property="og:description" />`;
+                        continue;
+                    case 'url':
+                        buff += `<meta content="${value[attribute]}" property="og:url" />`;
+                        continue;
+                    case 'image':
+                        buff += `<meta content="${value[attribute]}" property="og:image" />`;
+                        continue;
+                    case 'enhance_image':
+                        if (value[attribute]) {
+                            buff += `<meta name="twitter:card" content="summary_large_image">`;
+                        }
+                        continue;
+                    case 'color': {
+                        buff += `<meta content="${value[attribute]}" data-react-helmet="true" name="theme-color" />`;
+                    }
+                }
+            }
+            return buff;
+        }
     }
 }
 
-// (async () => {
-//     let config = await parse_yaml('../template/config.yaml');
-//     console.log(bind_config('head', config['head']));
-// })();
+(async () => {
+    let config = await parse_yaml('../template/config.yaml');
+    console.log(bind_config('embed', config['embed']));
+})();

@@ -7,6 +7,13 @@ cache:
 css:
     - 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css' # https://github.com/xz/new.css/blob/master/LICENSE
     - 'https://fonts.xz.style/serve/inter.css'
+embed:
+    title: My First New-Site # i should make this vary per page... maybe sometime soon
+    description: Welcome to my First New-Site!
+    url: https://example.com/
+    image:
+    enhance_image: true
+    color: '#43B581'
 
 head:
     - meta:
