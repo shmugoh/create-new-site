@@ -79,6 +79,7 @@ function processFlags() {
             console.error(
                 'Source folder does not match with template. Please remove and try again'
             );
+            return;
         }
     }
 
