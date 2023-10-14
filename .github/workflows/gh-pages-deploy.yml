@@ -1,4 +1,4 @@
-name: "[SAMPLE] markdown to html - build and deployment" 
+name: '[SAMPLE] markdown to html - build and deployment'
 
 on:
     workflow_dispatch:

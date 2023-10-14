@@ -4,7 +4,7 @@
     "author": "shmugo <juan@shmugo.co> (https://shmugo.co/)",
     "type": "module",
     "license": "MIT",
-    "version": "0.3.2-1",
+    "version": "0.3.2-2",
     "keywords": [
         "static",
         "generator",
@@ -13,6 +13,9 @@
         "site",
         "ejs"
     ],
+    "engine": {
+        "node": ">=18.0.0"
+    },
     "bin": "main.js",
     "repository": {
         "type": "git",

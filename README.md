@@ -45,7 +45,7 @@ to create issues or pull requests in this repository.
 
 ## Development Related
 
--   [ ] Upload to NPM
+-   [x] Upload to NPM
 -   [ ] Improve Error Managment
 -   [ ] Move to TypeScript
 -   [ ] Testing Script
