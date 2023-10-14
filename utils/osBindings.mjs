@@ -7,7 +7,7 @@ import fs from 'node:fs';
 export function CREATE_DIRECTORY(path) {
     fs.mkdir(path, (err) => {
         if (err) {
-            console.error(err);
+            return err;
         }
     });
 }
@@ -33,6 +33,18 @@ export async function READ_DIRECTORY(path) {
                 resolve(files);
             });
         }, 250);
+    });
+}
+
+/**
+ * Removes directory at the specified path.
+ * @param {string} path - The path where the directory will be removed.
+ */
+export function REMOVE_DIRECTORY(path) {
+    fs.rmSync(path, { recursive: true, force: true }, (err) => {
+        if (err) {
+            return err;
+        }
     });
 }
 

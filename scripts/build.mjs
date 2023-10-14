@@ -7,6 +7,7 @@ import {
     COPY_FILE,
     CREATE_DIRECTORY,
     READ_DIRECTORY,
+    REMOVE_DIRECTORY,
     READ_FILE,
     WRITE_FILE,
 } from '../utils/osBindings.mjs';
@@ -20,8 +21,12 @@ let converter = new showdown.Converter();
  * Creates a production environment by copying static files and minifying CSS.
  */
 export async function createProdEnv(src, dst) {
-    // Create necessary directories for destination
+    // Create necessary directory for destination
+    console.log('Removing destination folder...');
+    REMOVE_DIRECTORY(dst);
+    console.log('Creating new destination folder...');
     CREATE_DIRECTORY(dst);
+
     // Read the list of static and CSS files
     let staticFiles = await READ_DIRECTORY(`${src}\\static`);
     let cssFiles = await READ_DIRECTORY(`${src}\\css`);

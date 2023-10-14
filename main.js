@@ -82,22 +82,25 @@ function processFlags() {
         }
     }
 
-    // Step 3: Create the production environment
+    // Step 3: Creates the production environment
+    // Production environment is automatically removed
     await createProdEnv(flags['src'], flags['dst']);
-    // TODO: Delete Existing Production Environment
-    // might cause problems down the line (eg: if prod's root is current folder)
 
     // Step 4: Get a list of Markdown files in the 'markdown' directory
+    console.log('Reading Markdown Files...');
     let files = await READ_DIRECTORY(`${flags['src']}\\markdown`);
 
     // Step 5: Generate the navigation bar
+    console.log('Generating Navigation Bar...');
     let navbar = await processNavBar(`${flags['src']}\\markdown`);
 
     // Step 6: Parse config.yaml to JavaScript Object
+    console.log('Parsing Configuration...');
     let config = await parse_yaml(`${flags['src']}\\config.yaml`);
 
     // Step 7: Iterate through each Markdown file, parse it, and save as HTML
     files.forEach(async (file) => {
+        console.log(`Processing ${file}...`);
         await parseMarkdown(
             `${flags['src']}`,
             `${flags['src']}\\markdown\\${file}`,
