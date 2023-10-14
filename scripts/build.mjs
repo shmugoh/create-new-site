@@ -28,24 +28,24 @@ export async function createProdEnv(src, dst) {
     CREATE_DIRECTORY(dst);
 
     // Read the list of static and CSS files
-    let staticFiles = await READ_DIRECTORY(`${src}\\static`);
-    let cssFiles = await READ_DIRECTORY(`${src}\\css`);
+    let staticFiles = await READ_DIRECTORY(`${src}//static`);
+    let cssFiles = await READ_DIRECTORY(`${src}//css`);
 
     // Copy all static files to destinationd directory
-    CREATE_DIRECTORY(`${dst}\\static`);
+    CREATE_DIRECTORY(`${dst}//static`);
     staticFiles.forEach((file) => {
         // Checks if static file isn't .ejs
         if (file != String(file).match('.*.ejs$')) {
-            COPY_FILE(`${src}\\static\\${file}`, `${dst}\\static\\${file}`);
+            COPY_FILE(`${src}//static//${file}`, `${dst}//static//${file}`);
         }
     });
 
     // Minify CSS files and save them in destination directory
-    CREATE_DIRECTORY(`${dst}\\css`);
+    CREATE_DIRECTORY(`${dst}//css`);
     cssFiles.forEach(async (file) => {
         if (file == String(file).match('.*.css$')) {
             // Reads CSS
-            let data = await READ_FILE(`${src}\\css\\${file}`);
+            let data = await READ_FILE(`${src}//css//${file}`);
 
             // Minifies CSS
             let output = new CleanCSS({
@@ -60,7 +60,7 @@ export async function createProdEnv(src, dst) {
             }).minify(data);
 
             // Saves CSS to Destination Directory
-            WRITE_FILE(`${dst}\\css\\${file}`, output['styles']);
+            WRITE_FILE(`${dst}//css//${file}`, output['styles']);
         }
     });
 }
@@ -84,7 +84,8 @@ export async function parseMarkdown(
     config
 ) {
     // Extract file name and format from the source file path
-    let fileRegEx = markdownSrc.match(/.+\\([^\\]*)\.(\w+)$/);
+    console.log(markdownSrc)
+    let fileRegEx = markdownSrc.match(/.+\/([^//]*)\.(\w+)$/);
     let fileName = fileRegEx[1];
     let fileFormat = fileRegEx[2];
 
@@ -107,7 +108,7 @@ export async function parseMarkdown(
     // Render an HTML template using EJS, minify it,
     // and save in destination directory
     ejs.renderFile(
-        `${folderSrc}\\static\\${mode}.ejs`,
+        `${folderSrc}//static//${mode}.ejs`,
         {
             // Configuration Bindings
             title: bind_config('title', config['title']),
@@ -135,7 +136,7 @@ export async function parseMarkdown(
             });
 
             // Writes HTML
-            WRITE_FILE(`${dst}\\${fileName}.html`, html);
+            WRITE_FILE(`${dst}//${fileName}.html`, html);
         }
     );
 }

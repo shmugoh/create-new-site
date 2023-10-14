@@ -60,7 +60,7 @@ function processFlags() {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
         await CREATE_DIRECTORY(flags['src']);
-        await copyTemplate(`${__dirname}\\template`, `${flags['src']}`);
+        await copyTemplate(`${__dirname}//template`, `${flags['src']}`);
     } else {
         if (
             dirFiles.includes('css') &&
@@ -86,22 +86,22 @@ function processFlags() {
 
     // Step 4: Get a list of Markdown files in the 'markdown' directory
     console.log('Reading Markdown Files...');
-    let files = await READ_DIRECTORY(`${flags['src']}\\markdown`);
+    let files = await READ_DIRECTORY(`${flags['src']}//markdown`);
 
     // Step 5: Generate the navigation bar
     console.log('Generating Navigation Bar...');
-    let navbar = await processNavBar(`${flags['src']}\\markdown`);
+    let navbar = await processNavBar(`${flags['src']}//markdown`);
 
     // Step 6: Parse config.yaml to JavaScript Object
     console.log('Parsing Configuration...');
-    let config = await parse_yaml(`${flags['src']}\\config.yaml`);
+    let config = await parse_yaml(`${flags['src']}//config.yaml`);
 
     // Step 7: Iterate through each Markdown file, parse it, and save as HTML
     files.forEach(async (file) => {
         console.log(`Processing ${file}...`);
         await parseMarkdown(
             `${flags['src']}`,
-            `${flags['src']}\\markdown\\${file}`,
+            `${flags['src']}//markdown//${file}`,
             `${flags['dst']}`,
             'template',
             navbar,

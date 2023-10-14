@@ -15,8 +15,8 @@ export async function copyTemplate(src, dst) {
     srcFiles.forEach((file) => {
         // Synchronously copy each file from source to destination
         fs.cpSync(
-            `${src}\\${file}`,
-            `${dst}\\${file}`,
+            `${src}//${file}`,
+            `${dst}//${file}`,
             { recursive: true },
             (err) => {
                 if (err) {
