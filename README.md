@@ -53,6 +53,7 @@ to create issues or pull requests in this repository.
 ## User Experience / Features
 
 -   [ ] Beautify console logs
+-   [ ] Automatically add /css/ into HTML
 -   [ ] Sort NavBar by user choice
     -   through config.yaml? through automtic sorting (home first 'n the rest whatever the computer decides)
 -   [ ] Implement Blog Support

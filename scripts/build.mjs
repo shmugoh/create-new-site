@@ -42,10 +42,10 @@ export async function createProdEnv(src, dst) {
 
     // Minify CSS files and save them in destination directory
     CREATE_DIRECTORY(`${dst}\\css`);
-    cssFiles.forEach((file) => {
+    cssFiles.forEach(async (file) => {
         if (file == String(file).match('.*.css$')) {
             // Reads CSS
-            let data = READ_FILE(`${src}\\css\\${file}`);
+            let data = await READ_FILE(`${src}\\css\\${file}`);
 
             // Minifies CSS
             let output = new CleanCSS({
@@ -126,13 +126,13 @@ export async function parseMarkdown(
             }
 
             // Minfies HTML
-            // html = minify(html, {
-            //     removeAttributeQuotes: true,
-            //     caseSensitive: true,
-            //     collapseWhitespace: true,
-            //     removeComments: true,
-            //     quoteCharacter: `'`,
-            // });
+            html = minify(html, {
+                removeAttributeQuotes: true,
+                caseSensitive: true,
+                collapseWhitespace: true,
+                removeComments: true,
+                quoteCharacter: `'`,
+            });
 
             // Writes HTML
             WRITE_FILE(`${dst}\\${fileName}.html`, html);
