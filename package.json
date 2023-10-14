@@ -4,7 +4,7 @@
     "author": "shmugo <juan@shmugo.co> (https://shmugo.co/)",
     "type": "module",
     "license": "MIT",
-    "version": "0.3.1-1",
+    "version": "0.3.2-1",
     "keywords": [
         "static",
         "generator",

@@ -8,34 +8,31 @@ import { copyTemplate } from './scripts/template.mjs';
 import { processNavBar } from './scripts/navbar.mjs';
 
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, resolve } from 'path';
 
 /**
  * Retrieves folder paths based on the parsed command-line flags.
  *
  * By default, the source folder is set to 'dev' and the destination folder is set to 'prod'.
- * Please note that these folder paths must be specified relative to the same directory,
- * as the program automatically converts the provided paths into absolute paths.
+ * Paths can be specified as either relative or absolute.
  */
 function processFlags() {
-    let flagIndex = {
-        src: process.argv.indexOf('--src'),
-        dst: process.argv.indexOf('--dst'),
+    let flags = {
+        src: process.argv.find(
+            (arg, index) => arg === '--src' && index < process.argv.length - 1
+        ),
+        dst: process.argv.find(
+            (arg, index) => arg === '--dst' && index < process.argv.length - 1
+        ),
     };
 
-    Object.keys(flagIndex).forEach((i) => {
-        if (flagIndex[i] > -1) {
-            flagIndex[i] = `${process.cwd()}\\${
-                process.argv[flagIndex[i] + 1]
-            }`;
-        } else {
-            flagIndex[i] = null;
-        }
-    });
-
     return {
-        src: flagIndex['src'] || `${process.cwd()}\\dev`, // Development Folder
-        dst: flagIndex['dst'] || `${process.cwd()}\\prod`, // Compiled Folder
+        src: flags.src
+            ? resolve(process.argv[process.argv.indexOf(flags.src) + 1])
+            : resolve('dev'), // Development Folder
+        dst: flags.dst
+            ? resolve(process.argv[process.argv.indexOf(flags.dst) + 1])
+            : resolve('prod'), // Compiled Folder
     };
 }
 
@@ -79,6 +76,7 @@ function processFlags() {
             console.error(
                 'Source folder does not match with template. Please remove and try again'
             );
+            return;
         }
     }
 
