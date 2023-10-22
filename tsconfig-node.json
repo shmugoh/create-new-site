@@ -2,7 +2,7 @@
     "extends": ".\\tsconfig.json",
 
     "compilerOptions": {
-        "outDir": ".\\dist\\node",
+        "outDir": ".\\dist\\",
         "noEmit": false,
         "allowImportingTsExtensions": false
     }

@@ -19,10 +19,13 @@
     "engine": {
         "node": ">=18.0.0"
     },
-    "bin": "main.js",
+    "files": [
+        ".\\dist\\*"
+    ],
+    "bin": ".\\dist\\main.js",
     "scripts": {
         "start": "ts-node --esm main.ts",
-        "build:node": "copyfiles -a template\\**\\* dist\\node\\ && tsc --project tsconfig-node.json"
+        "build:node": "copyfiles -a template\\**\\* dist\\ && tsc --project tsconfig-node.json"
     },
     "dependencies": {
         "@exampledev/new.css": "^1.1.3",
