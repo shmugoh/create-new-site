@@ -10,9 +10,9 @@ import {
     REMOVE_DIRECTORY,
     READ_FILE,
     WRITE_FILE,
-} from '../utils/osBindings.mjs';
-import { fixBracketPreview } from '../utils/markdownPreviewFix.mjs';
-import { bind_config } from '../utils/parseConfig.mjs';
+} from '../utils/osBindings.mts';
+import { fixBracketPreview } from '../utils/markdownPreviewFix.mts';
+import { bind_config } from '../utils/parseConfig.mts';
 
 const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();
@@ -48,15 +48,15 @@ export async function createProdEnv(src: string, dst: string) {
             let data = await READ_FILE(`${src}//css//${file}`);
 
             // Minifies CSS
-            let output = new CleanCSS({
+            let output: any = new CleanCSS({
                 compatibility: 'ie8',
                 level: 2,
                 inline: false,
                 rebase: false,
-                keepBreaks: false,
-                aggressiveMerging: true,
-                processImport: false,
-                specialComments: 'none',
+                // keepBreaks: false,
+                // aggressiveMerging: true,
+                // processImport: false,
+                // specialComments: 'none',
             }).minify(data);
 
             // Saves CSS to Destination Directory

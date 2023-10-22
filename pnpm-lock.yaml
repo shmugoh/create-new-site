@@ -28,9 +28,21 @@ devDependencies:
   '@tsconfig/node18':
     specifier: ^18.2.2
     version: 18.2.2
+  '@types/clean-css':
+    specifier: ^4.2.9
+    version: 4.2.9
+  '@types/ejs':
+    specifier: ^3.1.4
+    version: 3.1.4
+  '@types/html-minifier':
+    specifier: ^4.0.4
+    version: 4.0.4
   '@types/node':
     specifier: ^20.8.6
     version: 20.8.6
+  '@types/showdown':
+    specifier: ^2.0.3
+    version: 2.0.3
   eslint:
     specifier: ^8.51.0
     version: 8.51.0
@@ -182,10 +194,43 @@ packages:
     resolution: {integrity: sha512-d6McJeGsuoRlwWZmVIeE8CUA27lu6jLjvv1JzqmpsytOYYbVi1tHZEnwCNVOXnj4pyLvneZlFlpXUK+X9wBWyw==}
     dev: true
 
+  /@types/clean-css@4.2.9:
+    resolution: {integrity: sha512-pjzJ4n5eAXAz/L5Zur4ZymuJUvyo0Uh0iRnRI/1kADFLs76skDky0K0dX1rlv4iXXrJXNk3sxRWVJR7CMDroWA==}
+    dependencies:
+      '@types/node': 20.8.6
+      source-map: 0.6.1
+    dev: true
+
+  /@types/ejs@3.1.4:
+    resolution: {integrity: sha512-fnM/NjByiWdSRJRrmGxgqOSAnmOnsvX1QcNYk5TVyIIj+7ZqOKMb9gQa4OIl/lil2w/8TiTWV+nz3q8yqxez/w==}
+    dev: true
+
+  /@types/html-minifier@4.0.4:
+    resolution: {integrity: sha512-kvzPbhN6CM+zFdOmLaGKF1DUnn9oYZteTiltHRFhsnj3vcnCZj1qVA0x1E7FTZvLT8e4WsHTSXk/0YV2NgOWOw==}
+    dependencies:
+      '@types/clean-css': 4.2.9
+      '@types/relateurl': 0.2.31
+      '@types/uglify-js': 3.17.3
+    dev: true
+
   /@types/node@20.8.6:
     resolution: {integrity: sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==}
     dependencies:
       undici-types: 5.25.3
+    dev: true
+
+  /@types/relateurl@0.2.31:
+    resolution: {integrity: sha512-vpqphbm0l/+6qWraFPDB2dq+vkJYFHKSdogLaOqdqjLZ6v4q/0HEBv3HGeEVlCdWXo8HEdAzA2vBNk7ZRXo2Cw==}
+    dev: true
+
+  /@types/showdown@2.0.3:
+    resolution: {integrity: sha512-cFuAcA3p2YPq8HR8KxvDXnOdccOZ74ypANB3kb3AL5Srji0QnteVw6vf4o7GJ8hMyz+uZ+nSQHVgXSgjYD1a5g==}
+    dev: true
+
+  /@types/uglify-js@3.17.3:
+    resolution: {integrity: sha512-ToldSfJ6wxO21cakcz63oFD1GjqQbKzhZCD57eH7zWuYT5UEZvfUoqvrjX5d+jB9g4a/sFO0n6QSVzzn5sMsjg==}
+    dependencies:
+      source-map: 0.6.1
     dev: true
 
   /acorn-jsx@5.3.2(acorn@8.10.0):
@@ -840,7 +885,6 @@ packages:
   /source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}

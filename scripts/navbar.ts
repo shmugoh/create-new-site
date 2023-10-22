@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import readline from 'readline';
-import { READ_DIRECTORY } from '../utils/osBindings.mjs';
+import { READ_DIRECTORY } from '../utils/osBindings.mts';
 
 /**
  * Iterates through each markdown file in the specified source directory (default is './markdown/')

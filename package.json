@@ -23,7 +23,7 @@
     },
     "scripts": {
         "start": "node main.js",
-        "test": "ts-node"
+        "test": "ts-node --esm main.ts"
     },
     "dependencies": {
         "@exampledev/new.css": "^1.1.3",
@@ -34,13 +34,17 @@
         "yaml": "^2.3.2"
     },
     "devDependencies": {
+        "@tsconfig/node18": "^18.2.2",
+        "@types/clean-css": "^4.2.9",
+        "@types/ejs": "^3.1.4",
+        "@types/html-minifier": "^4.0.4",
+        "@types/node": "^20.8.6",
+        "@types/showdown": "^2.0.3",
         "eslint": "^8.51.0",
         "eslint-config-prettier": "^9.0.0",
         "prettier": "^3.0.3",
-        "typescript": "^5.2.2",
         "ts-node": "^10.9.1",
         "tslib": "^2.6.2",
-        "@tsconfig/node18": "^18.2.2",
-        "@types/node": "^20.8.6"
+        "typescript": "^5.2.2"
     }
 }

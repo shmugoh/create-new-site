@@ -1,5 +1,5 @@
 import YAML from 'yaml';
-import { READ_FILE } from './osBindings.mjs';
+import { READ_FILE } from './osBindings.mts';
 
 /**
  * Reads a Raw YAML File asynchronously and parses its content as an object.

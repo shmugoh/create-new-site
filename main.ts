@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings.mjs';
-import { parse_yaml } from './utils/parseConfig.mjs';
+import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings.mts';
+import { parse_yaml } from './utils/parseConfig.mts';
 
-import { createProdEnv, parseMarkdown } from './scripts/build.mjs';
-import { copyTemplate } from './scripts/template.mjs';
-import { processNavBar } from './scripts/navbar.mjs';
+import { createProdEnv, parseMarkdown } from './scripts/build.ts';
+import { copyTemplate } from './scripts/template.ts';
+import { processNavBar } from './scripts/navbar.ts';
 
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';

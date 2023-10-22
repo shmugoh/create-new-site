@@ -1,9 +1,17 @@
 {
     "extends": "@tsconfig/node18/tsconfig.json",
-    "include": ["main.ts", "utils/**/*", "scripts/**/*"],
+    "include": [
+        "main.ts",
+        "utils/**/*",
+        "scripts/**/*",
+        "scripts/.d.ts",
+        "scripts.d.ts"
+    ],
     "compilerOptions": {
         "strict": true,
-        "resolveJsonModule": true
-        // "allowJs": true
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "allowJs": true
     }
 }
