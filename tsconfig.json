@@ -1,12 +1,7 @@
 {
     "extends": "@tsconfig/node18/tsconfig.json",
-    "include": [
-        "main.ts",
-        "utils/**/*",
-        "scripts/**/*",
-        "scripts/.d.ts",
-        "scripts.d.ts"
-    ],
+    "include": ["main.ts", "utils/**/*", "scripts/**/*"],
+    "exclude": ["node_modules"],
     "compilerOptions": {
         "strict": true,
         "resolveJsonModule": true,
