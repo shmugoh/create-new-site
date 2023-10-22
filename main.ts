@@ -72,7 +72,7 @@ function processFlags() {
         } else {
             // in case if -src folder is empty or has an unmatching file
             console.error(
-                'Source folder does not match with template. Please remove and try again'
+                'Source Directory is empty, has unmatching file, or incomplete. Please remove and try again'
             );
             return;
         }
