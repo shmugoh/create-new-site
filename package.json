@@ -7,7 +7,7 @@
         "url": "git+https://github.com/juanpisss/create-new-site.git"
     },
     "license": "MIT",
-    "version": "0.3.4",
+    "version": "0.3.4-1",
     "keywords": [
         "static",
         "generator",
