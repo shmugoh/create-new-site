@@ -34,7 +34,10 @@
  * @param {string} markdown - Raw String Contents of Markdown.
  * @param {string} mode     - Mode for which Markdown is being used
  */
-export function fixBracketPreview(markdown, mode = 'static') {
+export function fixBracketPreview(
+    markdown: string,
+    mode: string = 'static'
+): string | void {
     switch (mode) {
         case 'static':
             return String(markdown).replace(/\]\(\.\.\//g, '](./');

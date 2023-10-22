@@ -1,0 +1,15 @@
+{
+    "extends": "@tsconfig/node18/tsconfig.json",
+    "include": ["main.ts", "utils/**/*", "scripts/**/*"],
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "strict": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "allowJs": true
+    }
+}

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings.mjs';
-import { parse_yaml } from './utils/parseConfig.mjs';
+import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings';
+import { parse_yaml } from './utils/parseConfig';
 
-import { createProdEnv, parseMarkdown } from './scripts/build.mjs';
-import { copyTemplate } from './scripts/template.mjs';
-import { processNavBar } from './scripts/navbar.mjs';
+import { createProdEnv, parseMarkdown } from './scripts/build';
+import { copyTemplate } from './scripts/template';
+import { processNavBar } from './scripts/navbar';
 
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
@@ -51,14 +51,12 @@ function processFlags() {
 
     // Step 2: Process Source Folder
     // Checks if Source Folder exists
-    let dirFiles = await READ_DIRECTORY(`${flags['src']}`);
+    let dirFiles: any = await READ_DIRECTORY(`${flags['src']}`);
     if (dirFiles.code == 'ENOENT') {
         // Source Directory does not exist
         console.log(
             'Source Directory does not exist. Creating one right now...'
         );
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = dirname(__filename);
         await CREATE_DIRECTORY(flags['src']);
         await copyTemplate(`${__dirname}//template`, `${flags['src']}`);
     } else {
@@ -74,7 +72,7 @@ function processFlags() {
         } else {
             // in case if -src folder is empty or has an unmatching file
             console.error(
-                'Source folder does not match with template. Please remove and try again'
+                'Source Directory is empty, has unmatching file, or incomplete. Please remove and try again'
             );
             return;
         }
@@ -86,7 +84,7 @@ function processFlags() {
 
     // Step 4: Get a list of Markdown files in the 'markdown' directory
     console.log('Reading Markdown Files...');
-    let files = await READ_DIRECTORY(`${flags['src']}//markdown`);
+    let files: any = await READ_DIRECTORY(`${flags['src']}//markdown`);
 
     // Step 5: Generate the navigation bar
     console.log('Generating Navigation Bar...');
@@ -97,7 +95,7 @@ function processFlags() {
     let config = await parse_yaml(`${flags['src']}//config.yaml`);
 
     // Step 7: Iterate through each Markdown file, parse it, and save as HTML
-    files.forEach(async (file) => {
+    files.forEach(async (file: any) => {
         console.log(`Processing ${file}...`);
         await parseMarkdown(
             `${flags['src']}`,
