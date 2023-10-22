@@ -51,7 +51,7 @@ function processFlags() {
 
     // Step 2: Process Source Folder
     // Checks if Source Folder exists
-    let dirFiles = await READ_DIRECTORY(`${flags['src']}`);
+    let dirFiles: any = await READ_DIRECTORY(`${flags['src']}`);
     if (dirFiles.code == 'ENOENT') {
         // Source Directory does not exist
         console.log(
@@ -86,7 +86,7 @@ function processFlags() {
 
     // Step 4: Get a list of Markdown files in the 'markdown' directory
     console.log('Reading Markdown Files...');
-    let files = await READ_DIRECTORY(`${flags['src']}//markdown`);
+    let files: any = await READ_DIRECTORY(`${flags['src']}//markdown`);
 
     // Step 5: Generate the navigation bar
     console.log('Generating Navigation Bar...');
@@ -97,7 +97,7 @@ function processFlags() {
     let config = await parse_yaml(`${flags['src']}//config.yaml`);
 
     // Step 7: Iterate through each Markdown file, parse it, and save as HTML
-    files.forEach(async (file) => {
+    files.forEach(async (file: any) => {
         console.log(`Processing ${file}...`);
         await parseMarkdown(
             `${flags['src']}`,

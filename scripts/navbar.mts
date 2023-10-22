@@ -12,9 +12,9 @@ import { READ_DIRECTORY } from '../utils/osBindings.mjs';
  * @param {string} src - The source directory containing Markdown files.
  * @returns {Promise<string>} A Promise that resolves with the raw navigation bar string.
  */
-export async function processNavBar(src = './markdown') {
+export async function processNavBar(src = './markdown'): Promise<string> {
     // Read the list of files in the source directory.
-    const markdownFiles = await READ_DIRECTORY(src);
+    const markdownFiles: string[] = (await READ_DIRECTORY(src)) as string[]; // MAN
 
     // Empty buffer for Raw HTML Navigation Bar String
     let buff = '';
@@ -23,14 +23,14 @@ export async function processNavBar(src = './markdown') {
         setTimeout(async function () {
             for (const file of markdownFiles) {
                 // Skip files that don't have a '.md' extension.
-                if (file != file.match(/.*.md$/)) {
+                if (!file.endsWith('.md')) {
                     continue;
                 }
 
                 // Read the first line of the Markdown file to extract the title.
                 const readable = fs.createReadStream(`${src}//${file}`);
                 const reader = readline.createInterface({ input: readable });
-                let line;
+                let line: any;
                 for await (const fileLine of reader) {
                     line = fileLine;
                     break;
@@ -38,7 +38,7 @@ export async function processNavBar(src = './markdown') {
                 readable.close();
 
                 // Extract the file name and extension from the filename.
-                let fileRegEx = String(file).match(/([^\\]*)\.(\w+)$/);
+                let fileRegEx: any = String(file).match(/([^\\]*)\.(\w+)$/);
                 let fileName = fileRegEx[1];
 
                 // Construct a navigation link for the Markdown file using its title.

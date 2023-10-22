@@ -20,7 +20,7 @@ let converter = new showdown.Converter();
 /*
  * Creates a production environment by copying static files and minifying CSS.
  */
-export async function createProdEnv(src, dst) {
+export async function createProdEnv(src: string, dst: string) {
     // Create necessary directory for destination
     console.log('Removing destination folder...');
     REMOVE_DIRECTORY(dst);
@@ -28,22 +28,22 @@ export async function createProdEnv(src, dst) {
     CREATE_DIRECTORY(dst);
 
     // Read the list of static and CSS files
-    let staticFiles = await READ_DIRECTORY(`${src}//static`);
-    let cssFiles = await READ_DIRECTORY(`${src}//css`);
+    let staticFiles: any = await READ_DIRECTORY(`${src}//static`);
+    let cssFiles: any = await READ_DIRECTORY(`${src}//css`);
 
     // Copy all static files to destinationd directory
     CREATE_DIRECTORY(`${dst}//static`);
-    staticFiles.forEach((file) => {
+    staticFiles.forEach((file: string) => {
         // Checks if static file isn't .ejs
-        if (file != String(file).match('.*.ejs$')) {
+        if (!file.endsWith('.ejs')) {
             COPY_FILE(`${src}//static//${file}`, `${dst}//static//${file}`);
         }
     });
 
     // Minify CSS files and save them in destination directory
     CREATE_DIRECTORY(`${dst}//css`);
-    cssFiles.forEach(async (file) => {
-        if (file == String(file).match('.*.css$')) {
+    cssFiles.forEach(async (file: string) => {
+        if (file.endsWith('.css')) {
             // Reads CSS
             let data = await READ_FILE(`${src}//css//${file}`);
 
@@ -80,14 +80,14 @@ export async function parseMarkdown(
     markdownSrc = './markdown/index.md',
     dst = './prod',
     mode = 'template',
-    navbar,
-    config
+    navbar: string,
+    config: any
 ) {
     // Extract file name and format from the source file path
-    console.log(markdownSrc)
-    let fileRegEx = markdownSrc.match(/.+\/([^//]*)\.(\w+)$/);
-    let fileName = fileRegEx[1];
-    let fileFormat = fileRegEx[2];
+    console.log(markdownSrc);
+    let fileRegEx: any = markdownSrc.match(/.+\/([^//]*)\.(\w+)$/);
+    let fileName: string = fileRegEx[1];
+    let fileFormat: string = fileRegEx[2];
 
     // Check if the source file is a Markdown file
     if (fileFormat != 'md') {
@@ -98,7 +98,7 @@ export async function parseMarkdown(
     }
 
     // Read Markdown content from the source file
-    let markdownContent = await READ_FILE(markdownSrc);
+    let markdownContent: any = await READ_FILE(markdownSrc);
     markdownContent = fixBracketPreview(markdownContent);
 
     // Convert Markdown content to HTML
@@ -121,7 +121,7 @@ export async function parseMarkdown(
             navbar: navbar,
             markdownContent: htmlContent,
         },
-        (err, html) => {
+        (err: any, html: string) => {
             if (err) {
                 console.error(err);
             }
