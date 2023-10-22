@@ -58,7 +58,6 @@ export async function READ_FILE(path: string): Promise<string> {
         setTimeout(function () {
             fs.readFile(path, 'utf8', (err, data) => {
                 if (err) {
-                    console.error(err);
                     throw err;
                 }
                 resolve(data);
@@ -75,7 +74,6 @@ export async function READ_FILE(path: string): Promise<string> {
 export function WRITE_FILE(pathSrc: string, content: string): void | Error {
     fs.writeFile(pathSrc, content, (err) => {
         if (err) {
-            console.error(err);
             throw err;
         }
     });
@@ -89,7 +87,6 @@ export function WRITE_FILE(pathSrc: string, content: string): void | Error {
 export function COPY_FILE(pathSrc: string, pathDst: string): void | Error {
     fs.copyFile(pathSrc, pathDst, (err) => {
         if (err) {
-            console.error(err);
             throw err;
         }
     });

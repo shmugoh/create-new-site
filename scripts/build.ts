@@ -123,7 +123,7 @@ export async function parseMarkdown(
         },
         (err: any, html: string) => {
             if (err) {
-                console.error(err);
+                throw err;
             }
 
             // Minfies HTML

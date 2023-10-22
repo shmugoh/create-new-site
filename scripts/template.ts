@@ -1,4 +1,4 @@
-import { promises as fsPromises } from 'fs';
+import fs from 'fs';
 
 import { READ_DIRECTORY } from '../utils/osBindings';
 
@@ -16,9 +16,11 @@ export async function copyTemplate(src: string, dst: string) {
         // Iterate through the source files and copy them to the destination directory
         for (const file of srcFiles) {
             // Synchronously copy each file from source to destination
-            fsPromises.copyFile(`${src}//${file}`, `${dst}//${file}`);
+            fs.cpSync(`${src}//${file}`, `${dst}//${file}`, {
+                recursive: true,
+            });
         }
     } catch (err) {
-        console.error(err);
+        throw err;
     }
 }
