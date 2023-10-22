@@ -1,6 +1,6 @@
 import { promises as fsPromises } from 'fs';
 
-import { READ_DIRECTORY } from '../utils/osBindings.mts';
+import { READ_DIRECTORY } from '../utils/osBindings';
 
 /**
  * Asynchronous function to copy files from a template directory to a destination directory.

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings.mts';
-import { parse_yaml } from './utils/parseConfig.mts';
+import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings';
+import { parse_yaml } from './utils/parseConfig';
 
-import { createProdEnv, parseMarkdown } from './scripts/build.ts';
-import { copyTemplate } from './scripts/template.ts';
-import { processNavBar } from './scripts/navbar.ts';
+import { createProdEnv, parseMarkdown } from './scripts/build';
+import { copyTemplate } from './scripts/template';
+import { processNavBar } from './scripts/navbar';
 
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
@@ -57,8 +57,6 @@ function processFlags() {
         console.log(
             'Source Directory does not exist. Creating one right now...'
         );
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = dirname(__filename);
         await CREATE_DIRECTORY(flags['src']);
         await copyTemplate(`${__dirname}//template`, `${flags['src']}`);
     } else {

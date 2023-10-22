@@ -19,7 +19,6 @@
     "engine": {
         "node": ">=18.0.0"
     },
-    "type": "module",
     "bin": "main.js",
     "scripts": {
         "start": "ts-node --esm main.ts",
