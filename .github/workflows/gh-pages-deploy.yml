@@ -1,7 +1,20 @@
-name: '[SAMPLE] markdown to html - build and deployment'
+# This is a Sample Workflow for create-new-site. Feel free to make your own changes.
+# In this sample, there are two branches; main & ci.
+# Main Branch includes the /prod/ files in root, while ci includes the /dev/ files IN root.
+# Although w/ create-new-site you can parse file paths, this tends to get buggy when dealing with root folders.
+# Therefore, this script automatically moves them to their respectful folders for simplicity sake.
+
+name: markdown to html - build and deployment
 
 on:
     workflow_dispatch:
+        # push:
+        #     branches:
+        #         - 'ci'
+        #     # paths:
+        #     #   - "**.md"
+        #     #   - "**.css"
+        #     #   - "**.ejs"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -30,14 +43,23 @@ jobs:
               with:
                   node-version: 18
 
-            - name: Install Dependencies
-              run: npm i
+            - name: Install create-new-site
+              run: npm i -g create-new-site
 
-            - name: Run Script
-              run: node main.js # temp command for now
-              # The last two arguments are currently placeholders.
-              # Once 'create-new-site' is available on NPM,
-              # the only command that will run is `npx create-new-site`.
+            - name: Move Root to /dev/
+              run: |
+                  mkdir ./dev/
+                  mkdir ./dev/css
+                  mkdir ./dev/static
+                  mkdir ./dev/markdown
+
+                  cp css/* ./dev/css
+                  cp static/* ./dev/static
+                  cp markdown/* -r ./dev/markdown
+                  cp config.yaml -r ./dev/
+
+            - name: Compile Markdown to HTML
+              run: create-new-site
 
             - name: Prepare Prod Folder
               run: |
@@ -49,9 +71,13 @@ jobs:
                   ref: main
                   clean: false
 
+            - name: Remove Root Content # walking ticking time bomb right here, beware
+              run: |
+                  find . -type f \( ! -path "./prod_bak/*" ! -path "./.git/*" ! -path "./.gitignore" ! -path "./.github/*" \) -delete
+
             - name: Copy to Root
               run: |
-                  cp prod_bak/* .
+                  cp -r prod_bak/* .
                   rm -r prod_bak
 
             - name: Push Changes

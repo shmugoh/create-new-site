@@ -1,10 +1,7 @@
 # create-new-site
 
-Markdown-based static site generator that aims to simplify the process of creating static websites by
-utilizing the power of Markdown, EJS Templates, new.css, and modularity.
-
-`create-new-site` provides an efficient and developer-friendly solution for those who prefer to
-work with Markdown for static and are in need of a performant static site.
+Static Markdown Site Generator aiming to simplify the process of creating static websites built upon a
+strong principle on client performance and flexibility.
 
 # FAQ
 
@@ -57,4 +54,5 @@ to create issues or pull requests in this repository.
 -   [ ] Sort NavBar by user choice
     -   through config.yaml? through automtic sorting (home first 'n the rest whatever the computer decides)
 -   [ ] Implement Blog Support
+    -   [ ] Compress Images
 -   [ ] Subdirectory/Page Support
