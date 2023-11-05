@@ -1,3 +1,5 @@
+theme: new-css
+
 title: My First New-Site
 favicon: static/favicon.ico # https://github.com/Remix-Design/remixicon/blob/master/License
 cache:

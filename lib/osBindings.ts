@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+const path = require('path');
 
 /**
  * Creates a directory at the specified path.
@@ -39,6 +40,35 @@ export async function READ_DIRECTORY(path: string) {
             });
         }, 250);
     });
+}
+
+export function READ_TREE_DIRECTORY(
+    rootDir: string,
+    currentDir: string = ''
+): string[] {
+    const dirPath = path.join(rootDir, currentDir);
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+
+    let result: string[] = [];
+
+    for (const entry of entries) {
+        const entryPath = path.join(currentDir, entry.name);
+        if (entry.isFile()) {
+            result.push(entryPath);
+        } else if (entry.isDirectory()) {
+            const subDirectoryContents = READ_TREE_DIRECTORY(
+                rootDir,
+                entryPath
+            );
+            if (subDirectoryContents.length > 0) {
+                result = result.concat(subDirectoryContents);
+            } else {
+                result.push(entryPath);
+            }
+        }
+    }
+
+    return result;
 }
 
 /**

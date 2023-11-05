@@ -1,6 +1,5 @@
 # Project Specifics
-dev/
-prod/
+test/
 
 # Logs
 logs
