@@ -3,12 +3,17 @@ import fs from 'node:fs';
 /**
  * Creates a directory at the specified path.
  * @param {string} path - The path where the directory will be created.
+ * @returns {Promise<any>} - A promise that returns status of function.
  */
-export function CREATE_DIRECTORY(path: string): void | Error {
-    fs.mkdir(path, (err) => {
-        if (err) {
-            return err;
-        }
+export function CREATE_DIRECTORY(path: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(path, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(null);
+            }
+        });
     });
 }
 
@@ -69,12 +74,13 @@ export async function READ_FILE(path: string): Promise<string> {
 /**
  * Writes content to a file at the specified path.
  * @param {string} pathSrc - The path where the file will be created or overwritten.
- * @param {string} content - The content to write to the file.
+ * @param {any} content - The content to write to file.
  */
-export function WRITE_FILE(pathSrc: string, content: string): void | Error {
+export function WRITE_FILE(pathSrc: string, content: any): void | Error {
     fs.writeFile(pathSrc, content, (err) => {
         if (err) {
             throw err;
+        } else {
         }
     });
 }

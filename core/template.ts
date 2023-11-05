@@ -5,10 +5,10 @@ import { READ_DIRECTORY } from '../lib/osBindings';
 /**
  * Asynchronous function to copy files from a template directory to a destination directory.
  *
- * @param {string} src - The source directory where the template files are located.
  * @param {string} dst - The destination directory where the template files will be copied to.
  */
-export async function copyTemplate(src: string, dst: string) {
+export async function copyTemplate(dst: string) {
+    const src = `${__dirname}\\..\\template`;
     try {
         // Read the contents of the template source directory
         let srcFiles: string[] = (await READ_DIRECTORY(src)) as string[]; // man
