@@ -1,11 +1,9 @@
-#!/usr/bin/env node
+import { CREATE_DIRECTORY, READ_DIRECTORY } from './lib/osBindings';
+import { parse_yaml } from './lib/parseConfig';
 
-import { CREATE_DIRECTORY, READ_DIRECTORY } from './utils/osBindings';
-import { parse_yaml } from './utils/parseConfig';
-
-import { createProdEnv, parseMarkdown } from './scripts/build';
-import { copyTemplate } from './scripts/template';
-import { processNavBar } from './scripts/navbar';
+import { createProdEnv, parseMarkdown } from './core/build';
+import { copyTemplate } from './core/template';
+import { processNavBar } from './core/navbar';
 
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';

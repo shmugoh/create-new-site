@@ -1,5 +1,5 @@
 {
-    "name": "create-new-site",
+    "name": "jago",
     "description": "Static Markdown Site Generator with a strong focus on client performance and flexibility",
     "author": "shmugo <juan@shmugo.co> (https://shmugo.co/)",
     "repository": {
@@ -29,7 +29,9 @@
     },
     "dependencies": {
         "@exampledev/new.css": "^1.1.3",
+        "chalk": "^5.3.0",
         "clean-css": "^5.3.2",
+        "commander": "^11.1.0",
         "copyfiles": "^2.4.1",
         "ejs": "^3.1.9",
         "html-minifier": "^4.0.0",

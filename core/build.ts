@@ -10,9 +10,9 @@ import {
     REMOVE_DIRECTORY,
     READ_FILE,
     WRITE_FILE,
-} from '../utils/osBindings';
-import { fixBracketPreview } from '../utils/markdownPreviewFix';
-import { bind_config } from '../utils/parseConfig';
+} from '../lib/osBindings';
+import { fixBracketPreview } from '../lib/markdownPreviewFix';
+import { bind_config } from '../lib/parseConfig';
 
 const minify = htmlMinifyModule.minify;
 let converter = new showdown.Converter();

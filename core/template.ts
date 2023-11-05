@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { READ_DIRECTORY } from '../utils/osBindings';
+import { READ_DIRECTORY } from '../lib/osBindings';
 
 /**
  * Asynchronous function to copy files from a template directory to a destination directory.
