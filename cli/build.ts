@@ -1,6 +1,8 @@
 import { Command } from 'commander';
 
-import { setupStaticResources } from '../core/build';
+import { setupStaticResources, compileMarkdown } from '../core/build';
+import { processNavBar } from '../core/navbar';
+
 import {
     CREATE_DIRECTORY,
     READ_DIRECTORY,
@@ -48,7 +50,7 @@ export default async function createBuildCommand() {
             }
 
             // Create Build Queue
-            var buildQueue = [];
+            var buildQueue: Array<[string, string]> = [];
             for (const file of subQueue) {
                 const path = file.match(subdirPattern);
                 var root = '';
@@ -84,7 +86,13 @@ export default async function createBuildCommand() {
                 }
             }
 
-            console.log(buildQueue);
+            // Compiles Markdown Files to Folder
+            for (const file of buildQueue) {
+                // Builds NavBar & Markdown
+                await processNavBar(buildQueue).then(async (navbar) => {
+                    compileMarkdown(src, dst, file, config, navbar);
+                });
+            }
         });
 
     return buildCommand;

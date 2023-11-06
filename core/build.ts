@@ -76,64 +76,66 @@ export async function setupStaticResources(
 /**
  * Parses Markdown to HTML and saves the result in destination directory.
  *
- * @param {string} source - Source file path for Markdown content.
- * @param {string} config - Configuration Object to Process within HTML
+ * @param {string} src                      - String that points to PATH of Markdown Files
+ * @param {string} dst                      - String that points to PATH to save to
+ * @param {[string, string]} queue   - An array where each element is a string pair consisting of a filename (index 0) and a destination path (index 1).
+ * @param {string} config                   - Configuration Object to process within HTML
+ * @param {string} navbar                   - Compiled NavBar String to process within HTML
+ * @param {string} mode                     - Mode to Compile Markdown into
  */
-// export async function compileMarkdown(source, config) {
-//     // Extract file name and format from the source file path
-//     console.log(markdownSrc);
-//     let fileRegEx: any = markdownSrc.match(/.+\/([^//]*)\.(\w+)$/);
-//     let fileName: string = fileRegEx[1];
-//     let fileFormat: string = fileRegEx[2];
+export async function compileMarkdown(
+    src: string,
+    dst: string,
+    queue: [string, string],
+    config: any,
+    navbar: string,
+    mode: string = 'generic'
+) {
+    // Read Markdown content from the source file
+    const markdownFile: any = `${src}\\${queue[1]}\\${queue[0]}`;
+    let markdownContent: any = await READ_FILE(markdownFile);
+    markdownContent = fixBracketPreview(markdownContent);
 
-//     // Check if the source file is a Markdown file
-//     if (fileFormat != 'md') {
-//         console.error(
-//             `${fileName}.${fileFormat} in /markdown/ is not a .md file. Proceeding to skip.`
-//         );
-//         return;
-//     }
+    // Obtains Theme Path
+    const theme = config['theme'];
+    const themeFolder = `themes\\${theme}`;
 
-//     // Read Markdown content from the source file
-//     let markdownContent: any = await READ_FILE(markdownSrc);
-//     markdownContent = fixBracketPreview(markdownContent);
+    // Convert Markdown content to HTML
+    converter.setOption('tables', true);
+    var htmlContent = converter.makeHtml(markdownContent);
 
-//     // Convert Markdown content to HTML
-//     converter.setOption('tables', true);
-//     var htmlContent = converter.makeHtml(markdownContent);
+    // Render an HTML template using EJS, minify it,
+    // and save in destination directory
+    ejs.renderFile(
+        `${src}\\${themeFolder}\\${mode}.ejs`,
+        {
+            // Configuration Bindings
+            title: bind_config('title', config['title']),
+            favicon: bind_config('favicon', config['favicon']),
+            css: bind_config('css', config['css']),
+            cache: bind_config('cache', config['cache']),
+            head: bind_config('head', config['head']),
+            embed: bind_config('embed', config['embed']),
 
-//     // Render an HTML template using EJS, minify it,
-//     // and save in destination directory
-//     ejs.renderFile(
-//         `${folderSrc}//static//${mode}.ejs`,
-//         {
-//             // Configuration Bindings
-//             title: bind_config('title', config['title']),
-//             favicon: bind_config('favicon', config['favicon']),
-//             css: bind_config('css', config['css']),
-//             cache: bind_config('cache', config['cache']),
-//             head: bind_config('head', config['head']),
-//             embed: bind_config('embed', config['embed']),
+            navbar: navbar,
+            markdownContent: htmlContent,
+        },
+        (err: any, html: string) => {
+            if (err) {
+                throw err;
+            }
 
-//             navbar: navbar,
-//             markdownContent: htmlContent,
-//         },
-//         (err: any, html: string) => {
-//             if (err) {
-//                 throw err;
-//             }
+            // Minfies HTML
+            html = minify(html, {
+                removeAttributeQuotes: true,
+                caseSensitive: true,
+                collapseWhitespace: true,
+                removeComments: true,
+                quoteCharacter: `'`,
+            });
 
-//             // Minfies HTML
-//             html = minify(html, {
-//                 removeAttributeQuotes: true,
-//                 caseSensitive: true,
-//                 collapseWhitespace: true,
-//                 removeComments: true,
-//                 quoteCharacter: `'`,
-//             });
-
-//             // Writes HTML
-//             WRITE_FILE(`${dst}//${fileName}.html`, html);
-//         }
-//     );
-// }
+            // Writes HTML
+            WRITE_FILE(`${dst}\\${queue[1]}\\${queue[0]}.html`, html);
+        }
+    );
+}
