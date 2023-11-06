@@ -50,7 +50,7 @@ export default async function createBuildCommand() {
             }
 
             // Create Build Queue
-            var buildQueue: any;
+            var buildQueue: any = [];
             for (const file of subQueue) {
                 const path = file.match(subdirPattern);
                 var root = '';

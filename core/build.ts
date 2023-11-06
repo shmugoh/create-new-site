@@ -92,14 +92,14 @@ export async function compileMarkdown(
     mode: string = 'generic'
 ) {
     // Iterate through File in Queue
-    for (const file in queue) {
+    for (const i in queue) {
         // Read Markdown from Source File
-        const markdownFile: any = `${src}\\${file[1]}\\${file[0]}`;
+        const markdownFile: any = `${src}\\${queue[i][0]}\\${queue[i][1]}`;
         let markdownContent: any = await READ_FILE(markdownFile);
         markdownContent = fixBracketPreview(markdownContent);
 
         // Get NavBar based off PATH
-        let path: string = queue[1];
+        let path: string = queue[i][0];
         if (path == '.') {
             path = 'index';
         } else {
@@ -145,8 +145,11 @@ export async function compileMarkdown(
                     quoteCharacter: `'`,
                 });
 
+                // Grab File Name
+                const fileName = queue[i][1].replace(/\.md$/, '.html');
+
                 // Writes HTML
-                WRITE_FILE(`${dst}\\${file[1]}\\${file[0]}.html`, html);
+                WRITE_FILE(`${dst}\\${queue[i][0]}\\${fileName}`, html);
             }
         );
     }

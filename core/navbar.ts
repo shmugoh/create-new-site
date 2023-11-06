@@ -1,7 +1,3 @@
-import fs from 'node:fs';
-import readline from 'readline';
-import { READ_DIRECTORY } from '../lib/osBindings';
-
 /**
  * Iterates through each markdown file in the specified source directory (default is './markdown/')
  * and generates a Title String for a Navigation Bar. After finishing each iteration, it returns a
