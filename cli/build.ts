@@ -50,7 +50,7 @@ export default async function createBuildCommand() {
             }
 
             // Create Build Queue
-            var buildQueue: Array<[string, string]> = [];
+            var buildQueue: any;
             for (const file of subQueue) {
                 const path = file.match(subdirPattern);
                 var root = '';
@@ -85,14 +85,13 @@ export default async function createBuildCommand() {
                     }
                 }
             }
+            // im sorry
 
-            // Compiles Markdown Files to Folder
-            for (const file of buildQueue) {
-                // Builds NavBar & Markdown
-                await processNavBar(buildQueue).then(async (navbar) => {
-                    compileMarkdown(src, dst, file, config, navbar);
-                });
-            }
+            // Build NavBar per Queue
+            await processNavBar(buildQueue).then(async (navbar) => {
+                // Build Markdown per Queue
+                await compileMarkdown(src, dst, buildQueue, config, navbar);
+            });
         });
 
     return buildCommand;
