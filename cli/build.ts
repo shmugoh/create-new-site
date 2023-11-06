@@ -88,10 +88,12 @@ export default async function createBuildCommand() {
             // im sorry
 
             // Build NavBar per Queue
-            await processNavBar(buildQueue).then(async (navbar) => {
-                // Build Markdown per Queue
-                await compileMarkdown(src, dst, buildQueue, config, navbar);
-            });
+            await processNavBar(buildQueue, `${src}\\names.yaml`).then(
+                async (navbar) => {
+                    // Build Markdown per Queue
+                    await compileMarkdown(src, dst, buildQueue, config, navbar);
+                }
+            );
         });
 
     return buildCommand;
